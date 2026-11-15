@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure P2P File Transfer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div class="brand-mark">🔐</div>
+      <p class="eyebrow">SHADOW PROTOCOL · PROJECT DEMO</p>
+      <h1>Secure Peer-to-Peer<br><span>File Transfer</span></h1>
+      <p class="intro">Transfer a file directly between two browsers. The file is encrypted in the sender's browser using an ECDH-derived AES-GCM key.</p>
+      <div class="security"><span>●</span> ECDH P-256 · HKDF-SHA-256 · AES-256-GCM</div>
+    </header>
+
+    <section class="card connection">
+      <div class="section-heading"><span class="step">01</span><div><h2>Your connection</h2><p>Keep this page open while transferring.</p></div></div>
+      <div class="id-row"><div><label>Your peer ID</label><strong id="my-id">Connecting…</strong></div><button id="copy-id" class="secondary" disabled>Copy ID</button></div>
+      <p id="status" class="status">Connecting to the PeerJS signaling service…</p>
+    </section>
+
+    <section class="grid">
+      <section class="card">
+        <div class="section-heading"><span class="step">02</span><div><h2>Send a file</h2><p>Choose a file and enter the receiver's peer ID.</p></div></div>
+        <label for="remote-id">Receiver peer ID</label>
+        <input id="remote-id" type="text" placeholder="Paste receiver's peer ID" autocomplete="off">
+        <label class="file-picker" for="file-input"><span>＋</span><b id="file-label">Choose a file</b><small>Any file type · Browser memory is used</small></label>
+        <input id="file-input" type="file" hidden>
+        <button id="send-btn" class="primary" disabled>Encrypt &amp; send</button>
+        <p id="send-status" class="small-status">Waiting for a file and receiver ID.</p>
+        <progress id="send-progress" max="100" value="0"></progress>
+      </section>
+
+      <section class="card">
+        <div class="section-heading"><span class="step">03</span><div><h2>Receive a file</h2><p>Share your peer ID with the sender.</p></div></div>
+        <div class="receive-box"><div class="receive-icon">⇩</div><b>Ready to receive</b><p>Accept a connection from a sender who has your peer ID.</p></div>
+        <p id="receive-status" class="small-status">No incoming transfer yet.</p>
+        <progress id="receive-progress" max="100" value="0"></progress>
+        <a id="download-link" class="primary download hidden">Download received file</a>
+      </section>
+    </section>
+    <footer><b>Project note:</b> PeerJS provides peer discovery/signaling; file bytes travel over a WebRTC data channel when a direct connection is possible. This is a prototype. See README for limitations and testing instructions.</footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
